@@ -1,30 +1,25 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import axios from "axios"
 
 const MyOrders = () => {
 
     const [orders, setOrders] = useState([])
-    const [deleteOrder, setDeleteOrder] = useState([])
-    const location = useLocation();
-    const productID = location.pathname.split("/")[2];
- 
+    
+    // eslint-disable-next-line no-unused-vars
     useEffect(() => {
       const fetchRecipe = async () => {
         try{
           const response = await axios.get("http://localhost:8000/orders")
           setOrders(response.data)
-          console.log(orders)
         }catch(err){
           console.error(err)
         }
       }
   
       fetchRecipe()
-  
-    }, [])
-
-    console.log(orders)
+    
+    }, [orders])
 
     const handleRemoveOrder = async (productID) => {
       try {
@@ -55,24 +50,27 @@ const MyOrders = () => {
             <h1>My Orders</h1>
         </header>
         <div>
-            <table class="table table-striped">
-                <tr class="bg-info">
-                    <th>ID</th>
-                    <th>Order #</th>
-                    <th>date</th>
-                    <th># Products</th>
-                    <th>Final price</th>
-                    <th>Options</th>
-                </tr>
+            <table className="table table-striped">
+                <thead>
+                  <tr className="bg-info">
+                      <th>ID</th>
+                      <th>Order #</th>
+                      <th>date</th>
+                      <th># Products</th>
+                      <th>Final price</th>
+                      <th>Options</th>
+                  </tr>
+                </thead>
 
+                <tbody>
                 {orders.map((orders) => (
-                    <tr key={orders._id}>
-                        <td>{orders.id}</td>
-                        <td>{orders.Order}</td>
-                        <td>{orders.Date}</td>
+                    <tr key={orders.id}>
+                        <th>{orders.id}</th>
+                        <th>{orders.Order}</th>
+                        <th>{orders.Date}</th>
                         <th>
-                        {orders.Products && orders.Products.map(product => (
-                          <div key={product._id}>
+                        {orders.Products && orders.Products.map((product, index) => (
+                          <div key={index}>
                             <div>{product.name}</div>
                           </div>
                         ))}
@@ -84,13 +82,14 @@ const MyOrders = () => {
                           <Link to={`/EditOrder/${orders.id}`} key={orders._id} >
                             <button>Edit Order</button>
                           </Link>
-                          <Link key={orders._id} >
+                          <Link >
                             <button onClick={() => handleRemoveOrder(orders.id)}>Remove Product</button>
                           </Link>
                           
                         </th>
                     </tr>
                 ))}
+                </tbody>
             </table>    
             
             <div>

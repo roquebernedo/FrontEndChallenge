@@ -8,20 +8,19 @@ const AddEditOrder = () => {
     const location = useLocation();
     const productID = location.pathname.split("/")[2];
     const [products, setProducts] = useState([])
+    // eslint-disable-next-line no-unused-vars
     const [orderr, setOrderr] = useState({
         Order: '',
         Date: '',
         Products: [],
         FinalPrice: '',
     });
-    console.log(productID)
  
     useEffect(() => {
       const fetchRecipe = async () => {
         try{
           const response = await axios.get(`http://localhost:8000/order/${productID}`)
           setOrder(response.data)
-          console.log(order)
         }catch(err){
           console.error(err)
         }
@@ -29,15 +28,13 @@ const AddEditOrder = () => {
   
       fetchRecipe()
   
-    }, [])
-    console.log(order)
+    }, [order, productID])
  
     useEffect(() => {
       const fetchRecipe = async () => {
         try{
           const response = await axios.get("http://localhost:8000/")
           setProducts(response.data)
-          console.log(products)
         }catch(err){
           console.error(err)
         }
@@ -45,8 +42,7 @@ const AddEditOrder = () => {
   
       fetchRecipe()
   
-    }, [])
-    console.log(products)
+    }, [products])
 
     const handleAddProduct = async (productId) => {
         try {
@@ -88,28 +84,32 @@ const AddEditOrder = () => {
             </div>
 
             <table>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Unit Price</th>
-                    <th>Qyt</th>
-                    <th>Total Price</th>
-                    <th>Options</th>
-                </tr>
-
-                {products.map((products) => (
-                    <tr key={products._id}>
-                        <td>{products.id}</td>
-                        <td>{products.name}</td>
-                        <td>{products.unitPrice}</td>
-                        <th>{products.qty} </th>
-                        <th>{products.unitPrice * products.qty}</th>
-                        <th>
-                            <button onClick={() => handleAddProduct(products.id)}>Add Product</button>
-                            <button>Remove Product</button>
-                        </th>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Unit Price</th>
+                        <th>Qyt</th>
+                        <th>Total Price</th>
+                        <th>Options</th>
                     </tr>
-                ))} 
+                </thead>
+
+                <tbody>
+                    {products.map((products) => (
+                        <tr key={products.id}>
+                            <td>{products.id}</td>
+                            <td>{products.name}</td>
+                            <td>{products.unitPrice}</td>
+                            <th>{products.qty} </th>
+                            <th>{products.unitPrice * products.qty}</th>
+                            <th>
+                                <button onClick={() => handleAddProduct(products.id)}>Add Product</button>
+                                <button>Remove Product</button>
+                            </th>
+                        </tr>
+                    ))} 
+                </tbody>
             </table> 
         </div>
     </div>

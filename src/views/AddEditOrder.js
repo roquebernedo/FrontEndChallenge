@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import axios from "axios"
 import { useNavigate } from 'react-router-dom'
@@ -70,6 +69,7 @@ const AddEditOrder = () => {
             
 
             <table>
+              <thead>
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
@@ -78,9 +78,11 @@ const AddEditOrder = () => {
                     <th>Total Price</th>
                     <th>Options</th>
                 </tr>
+              </thead>
 
+              <tbody>
                 {products.map((products) => (
-                    <tr key={products._id}>
+                    <tr key={products.id}>
                         <td>{products.id}</td>
                         <td>{products.name}</td>
                         <td>{products.unitPrice}</td>
@@ -92,6 +94,7 @@ const AddEditOrder = () => {
                         </th>
                     </tr>
                 ))}
+              </tbody>
             </table> 
         </div>
     </div>

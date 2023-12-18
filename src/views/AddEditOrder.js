@@ -16,7 +16,7 @@ const AddEditOrder = () => {
     useEffect(() => {
       const fetchRecipe = async () => {
         try{
-          const response = await axios.get("http://localhost:8000/")
+          const response = await axios.get("https://reactchallenge.onrender.com/")
           setProducts(response.data)
           
         }catch(err){
@@ -31,7 +31,7 @@ const AddEditOrder = () => {
     const onSubmit = async e => {
       e.preventDefault()
       try{
-          await axios.post("http://localhost:8000/order", addOrder)
+          await axios.post("https://reactchallenge.onrender.com/order", addOrder)
           navigate("/")
         } catch (error) {
           console.log(error);
@@ -51,22 +51,21 @@ const AddEditOrder = () => {
         <div>
             <form onSubmit={onSubmit}>
                 <label>Name</label>
-                <input type='text' name='name' onChange={handleChange}/>
+                <input type='text' name='name' onChange={handleChange} required/>
                 <label>Order</label>
-                <input type='number' placeholder='Order #' name='Order' onChange={handleChange}/>
+                <input type='number' placeholder='Order #' name='Order' onChange={handleChange} required/>
                 <label>Date</label>
-                <input type='text' placeholder='Disable' name='Date' onChange={handleChange}/>
+                <input type='text' placeholder='Disable' name='Date' onChange={handleChange} readOnly/>
                 <label># Products</label>
-                <input type='text' placeholder='Disable' name='Products' onChange={handleChange}/>
+                <input type='text' placeholder='Disable' name='Products' onChange={handleChange} readOnly/>
                 <label>Final Price</label>
-                <input type='text' placeholder='Disable' name='FinalPrice' onChange={handleChange}/>
+                <input type='text' placeholder='Disable' name='FinalPrice' onChange={handleChange} readOnly/>
                 <div>
-                <button type='submit'>Add New Product to the Order</button>
-                
-            </div>
+                  <button type='submit'>Add New Order</button>
+                </div>
             </form>
             
-            
+            <h2>Productos Disponibles</h2>
 
             <table>
               <thead>
@@ -76,7 +75,6 @@ const AddEditOrder = () => {
                     <th>Unit Price</th>
                     <th>Qyt</th>
                     <th>Total Price</th>
-                    <th>Options</th>
                 </tr>
               </thead>
 
@@ -88,10 +86,6 @@ const AddEditOrder = () => {
                         <td>{products.unitPrice}</td>
                         <th>{products.qty} </th>
                         <th>{products.unitPrice * products.qty}</th>
-                        <th>
-                            <button>Add Product</button>
-                            <button>Remove Product</button>
-                        </th>
                     </tr>
                 ))}
               </tbody>

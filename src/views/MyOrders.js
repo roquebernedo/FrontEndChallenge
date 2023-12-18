@@ -6,11 +6,10 @@ const MyOrders = () => {
 
     const [orders, setOrders] = useState([])
     
-    // eslint-disable-next-line no-unused-vars
     useEffect(() => {
       const fetchRecipe = async () => {
         try{
-          const response = await axios.get("http://localhost:8000/orders")
+          const response = await axios.get("https://reactchallenge.onrender.com/orders")
           setOrders(response.data)
         }catch(err){
           console.error(err)
@@ -24,14 +23,12 @@ const MyOrders = () => {
     const handleRemoveOrder = async (productID) => {
       try {
         console.log(productID)
-        await axios.delete(`http://localhost:8000/orderr/${productID}`);
-        // Recargar la lista de órdenes después de eliminar una
-        const response = await axios.get("http://localhost:8000/orders");
+        await axios.delete(`https://reactchallenge.onrender.com/orderr/${productID}`);
+        const response = await axios.get("https://reactchallenge.onrender.com/orders");
         setOrders(response.data);
         console.log(productID)
       } catch (error) {
         console.error(error);
-        // Manejar el error, mostrar un mensaje al usuario, etc.
       }
     };
     
@@ -67,7 +64,7 @@ const MyOrders = () => {
                     <tr key={orders.id}>
                         <th>{orders.id}</th>
                         <th>{orders.Order}</th>
-                        <th>{orders.Date}</th>
+                        <th>{orders.Date.substring(0,10)}</th>
                         <th>
                         {orders.Products && orders.Products.map((product, index) => (
                           <div key={index}>
@@ -76,14 +73,14 @@ const MyOrders = () => {
                         ))}
                         </th>
                         <th>
-                        {calculateFinalPrice(orders.Products)}
+                        ${calculateFinalPrice(orders.Products)}
                         </th>
                         <th>
                           <Link to={`/EditOrder/${orders.id}`} key={orders._id} >
                             <button>Edit Order</button>
                           </Link>
                           <Link >
-                            <button onClick={() => handleRemoveOrder(orders.id)}>Remove Product</button>
+                            <button onClick={() => handleRemoveOrder(orders.id)}>Remove Order</button>
                           </Link>
                           
                         </th>

@@ -15,11 +15,13 @@ const AddEditOrder = () => {
         Products: [],
         FinalPrice: '',
     });
+
+    
  
     useEffect(() => {
       const fetchRecipe = async () => {
         try{
-          const response = await axios.get(`http://localhost:8000/order/${productID}`)
+          const response = await axios.get(`https://reactchallenge.onrender.com/order/${productID}`)
           setOrder(response.data)
         }catch(err){
           console.error(err)
@@ -33,7 +35,7 @@ const AddEditOrder = () => {
     useEffect(() => {
       const fetchRecipe = async () => {
         try{
-          const response = await axios.get("http://localhost:8000/")
+          const response = await axios.get("https://reactchallenge.onrender.com/")
           setProducts(response.data)
         }catch(err){
           console.error(err)
@@ -44,20 +46,15 @@ const AddEditOrder = () => {
   
     }, [products])
 
-    const handleAddProduct = async (productId) => {
-        try {
-          // Realiza la solicitud PUT para agregar el producto a la orden
-          await axios.put(`http://localhost:8000/orden/${productID}`, {
-            ...orderr,
-            Products: [...orderr.Products, productId],
-          });
-          // Actualiza la orden después de agregar el producto
-          const response = await axios.get(`http://localhost:8000/order/${productID}`);
-          setOrder(response.data);
-        } catch (error) {
-          console.error(error);
-          // Manejar el error, mostrar un mensaje al usuario, etc.
-        }
+    const calculateFinalPrice = (products) => {
+      if (Array.isArray(products)) {
+        const totalPrice = products.reduce(
+          (accumulator, product) => accumulator + product.unitPrice, 0
+        );
+        return totalPrice;
+      } else {
+        return 0;
+      }
     };
 
   return (
@@ -67,21 +64,26 @@ const AddEditOrder = () => {
         </header>
         <div>
             <form>
-                <label>Order #</label>
-                <input type='text' placeholder='Order #' name='Order'/>
-                <label>Date</label>
-                <input type='text' name='Date'/>
-                <label># Products</label>
-                <input type='text' name='Products'/>
-                <label>Final Price</label>
-                <input type='text' name='FinalPrice'/>
-            </form>
-            
-            <div>
-                <Link to="/AddEditOrder">
-                    <button>Add New Product to the Order</button>
+                <div>
+                  {order && (
+                    <div>
+                    <p>Name: {order.name}</p>
+                    <p>Order: {order.Order}</p>
+                    <p>Date: {order.Date}</p>
+                    <p># Products: 
+                      {order.Products && order.Products.map(products =>
+                        <div>{products.name}</div>
+                      )}</p>
+                    <p>Final Price: ${calculateFinalPrice(order.Products)}</p>
+                    </div>
+                  )}
+                  
+                </div>
+                
+                <Link to={`/EditOrder/${order.id}/AddProduct`} >
+                  <button>Edit Order</button>
                 </Link>
-            </div>
+            </form>
 
             <table>
                 <thead>
@@ -104,8 +106,13 @@ const AddEditOrder = () => {
                             <th>{products.qty} </th>
                             <th>{products.unitPrice * products.qty}</th>
                             <th>
-                                <button onClick={() => handleAddProduct(products.id)}>Add Product</button>
+                              <Link to={`/EditOrder/${order.id}/AddProduct`}>
+                                <button>Add Product</button>
+                              </Link>
+
+                              <Link to={`/EditOrder/${order.id}/AddProduct`}>
                                 <button>Remove Product</button>
+                              </Link>
                             </th>
                         </tr>
                     ))} 

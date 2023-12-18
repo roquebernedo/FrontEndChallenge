@@ -3,6 +3,7 @@ import './App.css';
 import MyOrders from './views/MyOrders';
 import AddEditOrder from './views/AddEditOrder';
 import EditOrder from './views/EditOrder';
+import AddProducts from './views/AddProducts';
 
 
 const router = createBrowserRouter([
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
   {
     path: "/EditOrder/:id",
     element: <EditOrder />
+  },
+  {
+    path: "/EditOrder/:id/AddProduct",
+    element: <AddProducts />
   }
 ])
 

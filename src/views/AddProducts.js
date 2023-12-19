@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from "axios"
 import { useLocation } from 'react-router-dom';
+import '../styles/AddProducts.scss'
 
 const AddProducts = () => {
 
@@ -44,7 +45,17 @@ const AddProducts = () => {
     
     }, [products])
 
-    const handleAddProduct = async (productId) => {
+    const handleRemoveProduct = async (productId) => {
+        try {
+            await axios.delete(`https://reactchallenge.onrender.com/delete-order/${productID}/product/${productId}`);
+            const response = await axios.get(`https://reactchallenge.onrender.com/order/${productID}`);
+            setOrder(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+  const handleAddProduct = async (productId) => {
         try {
           await axios.put(`https://reactchallenge.onrender.com/orden/${productID}`, {
             ...orderr,
@@ -56,21 +67,11 @@ const AddProducts = () => {
           console.error(error);
         }
     };
-
-    const handleRemoveProduct = async (productId) => {
-        try {
-            await axios.delete(`https://reactchallenge.onrender.com/delete-order/${productID}/product/${productId}`);
-            const response = await axios.get(`https://reactchallenge.onrender.com/order/${productID}`);
-            setOrder(response.data);
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
+    
   return (
     <div>
         <h1>AddProducts</h1>
-        <table>
+        <table className='table-products'>
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -80,17 +81,15 @@ const AddProducts = () => {
                         </tr>
                     </thead>
                     <tbody>
-                    {products.map((products) => (
-                        <tr key={products.id}>
-                            <th>{products.name}</th>
-                            <th>{products.unitPrice}</th>
-                            <th>{products.qty} </th>
-                            <th>
-                                <button onClick={() => handleAddProduct(products.id)}>Add Product</button>
-                                <button onClick={() => handleRemoveProduct(products.id)}>Remove Product</button>
+                    {products && products.map((product) => (
+                        <tr key={product.id}>
+                            <th>{product.name}</th>
+                            <th>{product.unitPrice}</th>
+                            <th>{product.qty} </th>
+                            <th className='option-button'>
+                              <button className='add-product' onClick={() => handleAddProduct(product.id)}>Add Product</button>
+                              <button className='remove-product' onClick={() => handleRemoveProduct(product.id)}>Remove Product</button>
                             </th>
-
-                            
                         </tr>
                     ))} 
                     </tbody>

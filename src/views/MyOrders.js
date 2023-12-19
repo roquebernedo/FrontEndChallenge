@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import axios from "axios"
+import '../styles/MyOrders.scss'
+import Modal from '../components/Modal'
 
 const MyOrders = () => {
 
-    const [orders, setOrders] = useState([])
+  const [orders, setOrders] = useState([])
     
     useEffect(() => {
       const fetchRecipe = async () => {
@@ -20,26 +22,42 @@ const MyOrders = () => {
     
     }, [orders])
 
-    const handleRemoveOrder = async (productID) => {
-      try {
-        console.log(productID)
-        await axios.delete(`https://reactchallenge.onrender.com/orderr/${productID}`);
-        const response = await axios.get("https://reactchallenge.onrender.com/orders");
-        setOrders(response.data);
-        console.log(productID)
-      } catch (error) {
-        console.error(error);
-      }
-    };
     
-    const calculateFinalPrice = (products) => {
-      const totalPrice = products.reduce(
-        (accumulator, product) => accumulator + product.unitPrice,
-        0
-      );
+  const calculateFinalPrice = (products) => {
+    const totalPrice = products.reduce(
+      (accumulator, product) => accumulator + product.unitPrice, 0);
   
       return totalPrice;
-    };
+  };
+
+  const [modalDisplay, setModalDisplay] = useState(false);
+  const modalRef = useRef(null);
+
+  const openModal = () => {
+    setModalDisplay(true);
+  };
+
+  const closeModal = () => {
+    setModalDisplay(false);
+  };
+
+  const closeOnOutsideClick = (event) => {
+    if (event.target === modalRef.current) {
+      closeModal();
+    }
+    console.log(event.target)
+  };
+
+  const handleRemoveOrder = async (productID) => {
+    try {
+      await axios.delete(`https://reactchallenge.onrender.com/orderr/${productID}`);
+      const response = await axios.get("https://reactchallenge.onrender.com/orders");
+      setOrders(response.data);
+      closeModal()
+    } catch (error) {
+      console.error(error);
+    }
+  };
     
   return (
     <div>
@@ -75,23 +93,29 @@ const MyOrders = () => {
                         <th>
                         ${calculateFinalPrice(orders.Products)}
                         </th>
-                        <th>
-                          <Link to={`/EditOrder/${orders.id}`} key={orders._id} >
-                            <button>Edit Order</button>
+                        <th className='option-buttons'>
+                          <Link to={`/EditOrder/${orders.id}`} key={orders._id}>
+                            <button className='edit-order'>Edit Order</button>
                           </Link>
-                          <Link >
-                            <button onClick={() => handleRemoveOrder(orders.id)}>Remove Order</button>
+                          <Link>
+                            <button onClick={openModal} className='remove-order'>Remove Order</button>
+                            <Modal
+                              closeModal={closeModal}
+                              modalDisplay={modalDisplay}
+                              closeOnOutsideClick={closeOnOutsideClick}
+                              text={'Are you sure you wanna delete the Order?'}
+                              handle={() => handleRemoveOrder(orders.id)}
+                            />
                           </Link>
-                          
                         </th>
                     </tr>
                 ))}
                 </tbody>
             </table>    
             
-            <div>
+            <div className='newOrder'>
                 <Link to="/AddEditOrder">
-                    <button>Add Order</button>
+                    <button className='button-new-Order'>Add Order</button>
                 </Link>
             </div>
         </div>

@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import axios from "axios"
+import '../styles/EditOrder.scss'
 
 const AddEditOrder = () => {
 
@@ -58,34 +59,35 @@ const AddEditOrder = () => {
     };
 
   return (
-    <div>
+    <div className='containe'>
         <header>
             <h1>Edit Order</h1>
         </header>
-        <div>
-            <form>
-                <div>
-                  {order && (
-                    <div>
-                    <p>Name: {order.name}</p>
-                    <p>Order: {order.Order}</p>
-                    <p>Date: {order.Date}</p>
-                    <p># Products: 
-                      {order.Products && order.Products.map(products =>
-                        <div>{products.name}</div>
-                      )}</p>
-                    <p>Final Price: ${calculateFinalPrice(order.Products)}</p>
+        <div className='box-main'>
+            <form className='box-form'>
+                {order && (
+                  <div>
+                    <div className='box'><label>Name:</label> {order.name}</div>
+                    <div className='box'><label>Order:</label> {order.Order}</div>
+                    <div className='box'><label>Date:</label> {order.Date}</div>
+                    <div className='edit-products-order box'>
+                      <div><label>Products:</label> </div>
+                      <div className='products-edit'>
+                        {order.Products && order.Products.map(products =>
+                          <div>{products.name}</div>
+                        )}
+                      </div>
                     </div>
-                  )}
-                  
-                </div>
+                    <div className='box'><label>Final Price:</label> ${calculateFinalPrice(order.Products)}</div>
+                  </div>
+                )}
                 
                 <Link to={`/EditOrder/${order.id}/AddProduct`} >
-                  <button>Edit Order</button>
+                  <button className='button-new-Order'>Edit Order</button>
                 </Link>
             </form>
 
-            <table>
+            <table className='table-product'>
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -93,27 +95,17 @@ const AddEditOrder = () => {
                         <th>Unit Price</th>
                         <th>Qyt</th>
                         <th>Total Price</th>
-                        <th>Options</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     {products.map((products) => (
                         <tr key={products.id}>
-                            <td>{products.id}</td>
-                            <td>{products.name}</td>
-                            <td>{products.unitPrice}</td>
+                            <th>{products.id}</th>
+                            <th>{products.name}</th>
+                            <th>{products.unitPrice}</th>
                             <th>{products.qty} </th>
                             <th>{products.unitPrice * products.qty}</th>
-                            <th>
-                              <Link to={`/EditOrder/${order.id}/AddProduct`}>
-                                <button>Add Product</button>
-                              </Link>
-
-                              <Link to={`/EditOrder/${order.id}/AddProduct`}>
-                                <button>Remove Product</button>
-                              </Link>
-                            </th>
                         </tr>
                     ))} 
                 </tbody>

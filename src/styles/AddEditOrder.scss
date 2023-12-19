@@ -1,0 +1,65 @@
+.containe{
+    padding: 0 15px;
+
+    .box-main{
+        display: flex;
+        flex-direction: column;
+
+        .box-form{
+            display: flex;
+            flex-direction: column;
+
+            input{
+                width: 250px;
+                margin-bottom: 10px;
+                border: 2px solid #00cdac;
+                border-radius: 5px;
+            }
+
+            .new-Order{
+                .button-new-Order{
+                    border: 2px solid #00cdac;
+                    color: #00cdac;
+                    font-weight: 600;
+                    background-color: #fff;
+                    border-radius: 5px;
+                    padding: 5px;
+                }
+
+                .button-new-Order:hover{
+                    color: #fff;
+                    background-color: #00cdac;
+                }
+            }
+        }
+
+        .subtitle{
+            padding-top: 20px;
+        }
+
+        .table-products{
+            border: 2px solid #00cdac;
+
+            thead{
+                border: 2px solid #00cdac;
+
+                tr{
+                    th{
+                        border: 2px solid #00cdac;
+                    }
+                }
+            }
+
+            tbody{
+                border: 2px solid #00cdac;
+
+                tr{
+                    th{
+                        font-weight: 400;
+                        border: 2px solid #00cdac;
+                    }
+                }
+            }
+        }
+    }
+}

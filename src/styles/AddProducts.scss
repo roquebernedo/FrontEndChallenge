@@ -1,0 +1,58 @@
+.table-products{
+    border: 2px solid #00cdac;
+
+    thead{
+        border: 2px solid #00cdac;
+
+        tr{
+            th{
+                border: 2px solid #00cdac;
+            }
+        }
+    }
+
+    tbody{
+        border: 2px solid #00cdac;
+
+        tr{
+            th{
+                font-weight: 400;
+                border: 2px solid #00cdac;
+            }
+            .option-button{
+                
+                gap: 10px;
+
+                .add-product{
+                    border: 2px solid #00cdac;
+                    color: #00cdac;
+                    font-weight: 600;
+                    background-color: #fff;
+                    border-radius: 5px;
+                    padding: 5px;
+                    margin: 10px 10px;
+                }
+    
+                .add-product:hover{
+                    color: #fff;
+                    background-color: #00cdac;
+                }
+    
+                .remove-product{
+                    border: 2px solid #00cdac;
+                    color: #00cdac;
+                    font-weight: 600;
+                    background-color: #fff;
+                    border-radius: 5px;
+                    padding: 5px;
+                    margin: 10px 10px 10px 0;
+                }
+    
+                .remove-product:hover{
+                    color: #fff;
+                    background-color: #00cdac;
+                }
+            }
+        }
+    }
+}

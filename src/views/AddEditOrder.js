@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from "axios"
 import { useNavigate } from 'react-router-dom'
+import '../styles/AddEditOrder.scss'
 
 const AddEditOrder = () => {
 
@@ -44,30 +45,30 @@ const AddEditOrder = () => {
     }
 
   return (
-    <div>
+    <div className='containe'>
         <header>
             <h1>Add Order</h1>
         </header>
-        <div>
-            <form onSubmit={onSubmit}>
-                <label>Name</label>
-                <input type='text' name='name' onChange={handleChange} required/>
-                <label>Order</label>
+        <div className='box-main'>
+            <form className='box-form' onSubmit={onSubmit}>
+                <label>Name:</label>
+                <input type='text' placeholder='Name' name='name' onChange={handleChange} required/>
+                <label>Order:</label>
                 <input type='number' placeholder='Order #' name='Order' onChange={handleChange} required/>
-                <label>Date</label>
+                <label>Date:</label>
                 <input type='text' placeholder='Disable' name='Date' onChange={handleChange} readOnly/>
-                <label># Products</label>
+                <label># Products:</label>
                 <input type='text' placeholder='Disable' name='Products' onChange={handleChange} readOnly/>
-                <label>Final Price</label>
+                <label>Final Price:</label>
                 <input type='text' placeholder='Disable' name='FinalPrice' onChange={handleChange} readOnly/>
-                <div>
-                  <button type='submit'>Add New Order</button>
+                <div className='new-Order'>
+                  <button className='button-new-Order' type='submit'>Add New Order</button>
                 </div>
             </form>
             
-            <h2>Productos Disponibles</h2>
+            <h2 className='subtitle'>Productos Disponibles</h2>
 
-            <table>
+            <table className='table-products'>
               <thead>
                 <tr>
                     <th>ID</th>
@@ -81,11 +82,11 @@ const AddEditOrder = () => {
               <tbody>
                 {products.map((products) => (
                     <tr key={products.id}>
-                        <td>{products.id}</td>
-                        <td>{products.name}</td>
-                        <td>{products.unitPrice}</td>
+                        <th>{products.id}</th>
+                        <th>{products.name}</th>
+                        <th>${products.unitPrice}</th>
                         <th>{products.qty} </th>
-                        <th>{products.unitPrice * products.qty}</th>
+                        <th>${products.unitPrice * products.qty}</th>
                     </tr>
                 ))}
               </tbody>
